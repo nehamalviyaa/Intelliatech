@@ -35,7 +35,7 @@ public class q12 {
     }
 
     public static void main(String[] args) {
-
+        //Question number 12
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Enter the Array size: ");
