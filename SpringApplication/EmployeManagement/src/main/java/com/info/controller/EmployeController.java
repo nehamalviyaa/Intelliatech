@@ -1,5 +1,7 @@
 package com.info.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,5 +56,29 @@ public class EmployeController {
             @PathVariable Integer id,
             @RequestBody EmployeResponseDTO dto) {
         return ResponseEntity.ok(service.updateEmploye(id, dto));
+    }
+    
+    
+    @GetMapping("/highest-salary")
+    public ResponseEntity<List<EmployeResponseDTO>> findHighestSalary(){
+    	return ResponseEntity.ok(service.highestSalaryEmploye());
+    }
+    
+    
+    @GetMapping("/by-department/{department}")
+    public ResponseEntity<List<EmployeResponseDTO>> findByDepartment(@PathVariable String department){
+    	return ResponseEntity.ok(service.getEmployeByDepartment(department));
+    }
+    
+    @GetMapping("/average-salary")
+    public ResponseEntity<Double> getAverageSalary(){
+    	return ResponseEntity.ok(service.getAverageSalary());
+    }
+    
+    @GetMapping("/salary-above/{amount}")
+    public ResponseEntity<List<EmployeResponseDTO>> getAboveSalary(
+            @PathVariable Double amount) {
+
+        return ResponseEntity.ok(service.getEmployeesAboveSalary(amount));
     }
 }

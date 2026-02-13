@@ -2,6 +2,8 @@ package com.info.service;
 
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +30,6 @@ public class EmployeService {
         this.passwordEncoder = passwordEncoder;
     }
 
-   
     //save
     @Transactional
     public EmployeDTO saveEmploye(EmployeDTO dto) {
@@ -114,5 +115,53 @@ public class EmployeService {
 
         repo.delete(emp);
     }
+    
+    //Highest Salary employe
+    public List<EmployeResponseDTO> highestSalaryEmploye() {
 
+        Employe emp = repo.findTopByOrderBySalaryDesc()
+                .orElseThrow(() -> new RuntimeException("No Employe found"));
+
+        EmployeResponseDTO dto = new EmployeResponseDTO(
+                emp.getName(),
+               emp.getEmail(),
+               emp.getSalary(),
+               emp.getDepartment()
+        );
+
+        return List.of(dto); 
+    }
+
+    
+     //find by department
+    public List<EmployeResponseDTO> getEmployeByDepartment(String dept){
+    	List<Employe> empList = repo.getEmployeByDepartment(dept);
+    	
+    	return empList.stream().map(emp -> new EmployeResponseDTO(
+    			emp.getName(),
+    			emp.getEmail(), 
+    			emp.getSalary(),
+    			emp.getDepartment()))
+    			.toList();
+    }
+    
+    //AverageSalaryEmploye
+    public Double getAverageSalary() {
+    	return repo.findAll().stream().mapToDouble(Employe::getSalary).average().orElse(0.0);
+    }
+    
+    //aboveSalaryEmploye
+    public List<EmployeResponseDTO> getEmployeesAboveSalary(Double amount) {
+
+        return repo.findBySalaryGreaterThan(amount)
+                .stream()
+                .map(emp -> new EmployeResponseDTO(
+                        emp.getName(),
+                        emp.getEmail(),
+                        emp.getSalary(),
+                        emp.getDepartment()
+                ))
+                .toList();
+    }
+     
 }

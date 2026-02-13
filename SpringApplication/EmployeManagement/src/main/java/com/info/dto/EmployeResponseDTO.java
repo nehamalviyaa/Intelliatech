@@ -22,6 +22,18 @@ public class EmployeResponseDTO {
 	@Column(nullable = false)
 	private String department;
 	
+	public EmployeResponseDTO() {
+		
+	}
+	
+	public EmployeResponseDTO(String empName, String empEmail, double empSalary, String empDepartment) {
+	
+		this.name = empName;
+		this.email = empEmail;
+		this.salary = empSalary;
+		this.department = empDepartment;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
