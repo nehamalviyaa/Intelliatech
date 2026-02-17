@@ -124,7 +124,7 @@
 <script>
     let stompClient = null;
 
-    // ✅ TAB BASED USERNAME (PERFECT)
+   
     let username = sessionStorage.getItem("username");
 
     if (!username || username.trim() === "") {
@@ -143,15 +143,16 @@
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function () {
-            stompClient.subscribe('/topic/public', function (message) {
-                const msg = JSON.parse(message.body);
+			stompClient.subscribe('/topic/public', function (message) {
+			    const msg = JSON.parse(message.body);
 
-                if (msg.sender === username) {
-                    showMessage(msg, 'right'); // my msg
-                } else {
-                    showMessage(msg, 'left');  // other user
-                }
-            });
+			    if (msg.sender === username) {
+			        showMessage(msg, 'right');   // mera message
+			    } else {
+			        showMessage(msg, 'left');    // dusre tab ka message
+			    }
+			});
+
         });
     }
 
