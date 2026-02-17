@@ -20,4 +20,9 @@ public class UserService {
 	return userRepo.save(user);
 	}
 	
+	
+	//DELETE
+	public void deleteUser(Integer id) {
+	 userRepo.deleteById(id);
+	}
 }

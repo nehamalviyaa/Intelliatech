@@ -18,7 +18,6 @@ import com.info.exception.ResourceNotFoundException;
 import com.info.exception.StockNotAvailableException;
 import com.info.repo.CartRepository;
 import com.info.repo.OrderRepository;
-import com.info.repo.ProductRepository;
 
 
 @Service
@@ -27,17 +26,16 @@ public class OrderService {
 
     private final CartRepository cartRepo;
     private final OrderRepository orderRepo;
-    private final ProductRepository productRepo;
-    private final DiscountService discountService;
+    private final InvoiceService invoiceService;
 
     public OrderService(CartRepository cartRepo, OrderRepository orderRepo,
-                        ProductRepository productRepo, DiscountService discountService) {
+                        InvoiceService invoiceService) {
         this.cartRepo = cartRepo;
         this.orderRepo = orderRepo;
-        this.productRepo = productRepo;
-        this.discountService = discountService;
+        this.invoiceService = invoiceService;
     }
 
+    
     // PLACE ORDER
     public OrderResponseDTO placeOrder(Integer userId, Integer productId) {
 
@@ -74,7 +72,12 @@ public class OrderService {
         order.getItems().add(oi);
 
         double total = product.getPrice() * cartItem.getQuantity();
-        total = discountService.applyDiscount(total);
+        order.setTotalAmount(total); 
+
+        orderRepo.save(order);
+
+        //INVOICE CREATION
+        invoiceService.generateInvoice(order, order.getItems());
         order.setTotalAmount(total);
 
         // remove ordered item from cart
@@ -95,11 +98,10 @@ public class OrderService {
     }
 
     
+    
     // ORDER HISTORY
     public List<OrderResponseDTO> orderHistory(Integer userId) {
-
         List<Order> orders = orderRepo.findByUserId(userId);
-
         return orders.stream()
                 .map(o -> {
                     OrderResponseDTO dto = new OrderResponseDTO();

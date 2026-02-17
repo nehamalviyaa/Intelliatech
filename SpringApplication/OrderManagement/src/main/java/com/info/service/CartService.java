@@ -77,10 +77,12 @@ public class CartService {
             return dto;
         }).toList();
 
+        
         for (CartItems i : cart.getItems()) {
             total += i.getProduct().getPrice() * i.getQuantity();
         }
 
+        
         CartResponseDTO response = new CartResponseDTO();
         response.setCartId(cart.getId());
         response.setUserId(userId);
