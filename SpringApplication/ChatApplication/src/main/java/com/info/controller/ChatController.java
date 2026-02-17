@@ -4,16 +4,14 @@ import java.util.List;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.info.entity.ChatMessage;
 import com.info.service.ChatService;
 
-@RestController
-@RequestMapping
+@Controller
 public class ChatController {
 	
 	
