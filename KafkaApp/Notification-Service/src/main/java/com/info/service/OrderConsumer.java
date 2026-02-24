@@ -28,9 +28,8 @@ public class OrderConsumer {
 	           
 			
 		}
-		
-		
 	}
+	
 	
 	public void processOrder(String message) {
 		
